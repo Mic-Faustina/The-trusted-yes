@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Citizen {
+  id        String   @id @default(cuid())
+  name      String
+  dob       DateTime
+  nin       String   @unique
+  state     String
+  createdAt DateTime @default(now())
+}
+
+model VerificationLog {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  question  String
+  outcome   String   // "valid" | "invalid" | "forged" | "replayed"
+  answer    Boolean?
+  sub       String?
+  reason    String?
+}
